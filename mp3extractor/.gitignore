@@ -1,0 +1,5 @@
+mp3extractor
+
+# Testscript output directory (can be symlink).
+#
+test-mp3extractor

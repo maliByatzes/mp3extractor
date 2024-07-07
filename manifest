@@ -1,0 +1,13 @@
+: 1
+name: mp3extractor
+version: 0.1.0-a.0.z
+language: c++
+summary: mp3extractor C++ executable
+license: other: proprietary ; Not free/open source.
+description-file: README.md
+url: https://example.org/mp3extractor
+email: malib2027@gmail.com
+#build-error-email: malib2027@gmail.com
+depends: * build2 >= 0.16.0
+depends: * bpkg >= 0.16.0
+#depends: libhello ^1.0.0
