@@ -1,14 +1,19 @@
+#include "video_parser.h"
+#include <cstdlib>
 #include <iostream>
+#include <stdexcept>
 
-int main (int argc, char* argv[])
-{
-  using namespace std;
+// TODO: parse the file path from command line instead
 
-  if (argc < 2)
-  {
-    cerr << "error: missing name" << endl;
-    return 1;
+int main() {
+  Parser mp4parser{};
+
+  const std::string file_name{"video1.mp4"};
+  // Testing purposes
+  try {
+    mp4parser.readFileData(file_name);
+  } catch (std::runtime_error &e) {
+    std::cerr << e.what() << '\n';
+    std::exit(1);
   }
-
-  cout << "Hello, " << argv[1] << '!' << endl;
 }
