@@ -12,14 +12,14 @@ int main() {
   // Testing purposes
   try {
     mp4parser.readFileData(file_name);
+
+    if (mp4parser.verifyFileData()) {
+      std::cout << "Data is valid.\n";
+    } else {
+      std::cout << "Data is invalid.\n";
+    }
   } catch (std::runtime_error &e) {
     std::cerr << e.what() << '\n';
     std::exit(1);
-  }
-
-  if (mp4parser.verifyFileData()) {
-    std::cout << "Data is valid.\n";
-  } else {
-    std::cout << "Data is invalid.\n";
   }
 }
