@@ -1,4 +1,5 @@
 #include "video_parser.h"
+#include <cassert>
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -65,9 +66,7 @@ bool Parser::verifyFileData() {
 }
 
 uint32_t Parser::extractInteger(file_iterator start_it) {
-  if ((start_it + 4) == m_file_data.end()) {
-    throw std::runtime_error("Insufficient data to extract size.");
-  }
+  assert((start_it + 4) != m_file_data.end());
 
   // big-endian exctraction
   return (*(start_it) << 24) | (*(start_it + 1) << 16) |
