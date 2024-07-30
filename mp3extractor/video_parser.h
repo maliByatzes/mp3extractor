@@ -20,6 +20,7 @@ private:
 
   file_iterator findAtom(const std::string &atom_name);
   uint32_t extractInteger(file_iterator start_it);
+  std::string exctractString(file_iterator start_it, size_t length);
 };
 
 #endif
