@@ -60,19 +60,6 @@ bool Parser::verifyFileData() {
   auto atom_it = findAtom(FILETYPE);
 
   if (atom_it != m_file_data.end()) {
-    /*
-    std::cout << "size: " << extractInteger(atom_it - 4) << '\n';
-    std::cout << "type: " << exctractString(atom_it, 4) << '\n';
-    std::cout << "major brand: " << exctractString(atom_it + 4, 4) << '\n';
-    std::cout << "minor version: " << extractInteger(atom_it + 8) << '\n';
-<<<<<<< HEAD
-    std::cout << "compatible brand 1: " << exctractString(atom_it + 12, 4) <<
-    '\n'; std::cout << "compatible brand 2: " << exctractString(atom_it + 16, 4)
-    << '\n'; std::cout << "compatible brand 3: " << exctractString(atom_it + 20,
-    4) << '\n'; std::cout << "compatible brand 4: " << exctractString(atom_it +
-    24, 4) << '\n';
-    */
-
     uint32_t file_size{extractInteger(atom_it - 4)};
     if (m_file_data.size() < file_size) {
       return false;
@@ -90,12 +77,7 @@ bool Parser::verifyFileData() {
         valid_brands.end()) {
       return false;
     }
-=======
-    std::cout << "compatible brand 1: " << exctractString(atom_it + 12, 4) << '\n';
-    std::cout << "compatible brand 2: " << exctractString(atom_it + 16, 4) << '\n';
-    std::cout << "compatible brand 3: " << exctractString(atom_it + 20, 4) << '\n';
-    std::cout << "compatible brand 4: " << exctractString(atom_it + 24, 4) << '\n';
->>>>>>> 01df325b4101e92d49842b5c3b0ceedbbcf5dee3
+
     return true;
   }
 
