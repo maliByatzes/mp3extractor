@@ -23,4 +23,7 @@ int main() {
   } else {
     std::cout << "Data is invalid.\n";
   }
+
+  // parse/extract audio data
+  mp4parser.parseAudioTrack();
 }

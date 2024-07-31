@@ -13,7 +13,7 @@ public:
 
   void readFileData(const std::string &file_name);
   bool verifyFileData();
-  // std::vector<uint8_t> extractMediaDataBox();
+  void parseAudioTrack(); // returns `void` for now
 
 private:
   std::vector<uint8_t> m_file_data{};

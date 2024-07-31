@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
+#include <cstdlib>
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -34,22 +35,25 @@ void Parser::readFileData(const std::string &file_name) {
 
 file_iterator Parser::findAtom(const std::string &atom_name) {
   constexpr int DATA_LEN{4};
+  const int HEADER_SIZE{8};
   if (atom_name.length() != DATA_LEN) {
     return m_file_data.end();
   }
 
   auto it = m_file_data.begin();
-  std::string buffer{};
-  while (it < m_file_data.end() - DATA_LEN) {
-    buffer.push_back(static_cast<unsigned char>(*it));
+  while (it < m_file_data.end() - HEADER_SIZE) {
+    uint32_t atom_size{extractInteger(it)};
 
-    if (buffer.size() == 4 && buffer == atom_name) {
-      return it - DATA_LEN + 1;
-    } else if (buffer.size() == 4 && buffer != atom_name) {
-      buffer.clear();
+    if (atom_size < HEADER_SIZE) {
+      return m_file_data.end();
     }
 
-    it++;
+    std::string current_atom_name(it + 4, it + 8);
+    if (current_atom_name == atom_name) {
+      return it;
+    }
+
+    it += atom_size;
   }
 
   return m_file_data.end();
@@ -60,17 +64,17 @@ bool Parser::verifyFileData() {
   auto atom_it = findAtom(FILETYPE);
 
   if (atom_it != m_file_data.end()) {
-    uint32_t file_size{extractInteger(atom_it - 4)};
+    uint32_t file_size{extractInteger(atom_it)};
     if (m_file_data.size() < file_size) {
       return false;
     }
 
-    std::string type{exctractString(atom_it, 4)};
+    std::string type{exctractString(atom_it + 4, 4)};
     if (type != FILETYPE) {
       return false;
     }
 
-    std::string major_brand{exctractString(atom_it + 4, 4)};
+    std::string major_brand{exctractString(atom_it + 8, 4)};
     std::vector<std::string> valid_brands{"isom", "iso2", "mp41", "mp42"};
 
     if (std::find(valid_brands.begin(), valid_brands.end(), major_brand) ==
@@ -82,6 +86,19 @@ bool Parser::verifyFileData() {
   }
 
   return false;
+}
+
+void Parser::parseAudioTrack() {
+  // find `moov` atom box
+  const std::string MOOV_BOX{"moov"};
+  auto moov_atom{findAtom(MOOV_BOX)};
+
+  if (moov_atom == m_file_data.end()) {
+    std::cerr << "moov atom is not found!!!\n";
+    std::exit(1);
+  } else {
+    std::cout << "moov atom was found.\n";
+  }
 }
 
 uint32_t Parser::extractInteger(file_iterator start_it) {
